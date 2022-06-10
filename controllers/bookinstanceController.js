@@ -1,8 +1,16 @@
 var BookInstance = require('../models/bookinstance');
 
-// Показать список всех BookInstances.
-exports.bookinstance_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: BookInstance list');
+// Показать список всех BookInstance
+exports.bookinstance_list = function(req, res, next) {
+
+  BookInstance.find()
+    .populate('book')
+    .exec(function (err, list_bookinstances) {
+      if (err) { return next(err); }
+      // Successful, so render
+      res.render('bookinstance_list', { title: 'Book Instance List', bookinstance_list: list_bookinstances });
+    });
+
 };
 
 // Показать подробную страницу для данного BookInstance.
